@@ -13,6 +13,48 @@ This service handles all AI and RAG operations for Article Chat. It processes ar
 - **LangChain Integration**: All user prompts go through LangChain decision-making process while preserving conversation history
 - Manages conversation context and memory
 
+## RAG Process Flow
+
+```mermaid
+flowchart TB
+    START[Service Startup] --> LOAD[Load articles.json]
+    LOAD --> INIT[Initialize FAISS Vector Store]
+    INIT --> READY[Service Ready on Port 3001]
+
+    READY --> |Article Request| ART[Article Processing]
+    READY --> |Chat Request| CHAT[Chat Processing]
+
+    subgraph "Article Processing Pipeline"
+        ART --> FETCH[1. Fetch & Parse HTML]
+        FETCH --> CHUNK[2. Text Chunking<br/>1000 chars, 200 overlap]
+        CHUNK --> EMBED1[3. Generate Embeddings<br/>HuggingFace Local]
+        EMBED1 --> STORE[4. Store in FAISS<br/>Save to disk]
+        STORE --> ART_DONE[Return: chunks count]
+    end
+
+    subgraph "Chat RAG Pipeline"
+        CHAT --> CLASSIFY[1. Classify Question<br/>8 types: summary, compare, etc.]
+        CLASSIFY --> EMBED2[2. Embed Query<br/>HuggingFace]
+        EMBED2 --> SEARCH[3. FAISS Similarity Search<br/>Retrieve Top-4 chunks]
+        SEARCH --> PROMPT[4. Generate Specialized Prompt<br/>Based on question type]
+        PROMPT --> CLAUDE[5. Claude API<br/>Generate Response]
+        CLAUDE --> FORMAT[6. Format with Sources<br/>Add relevance scores]
+        FORMAT --> CHAT_DONE[Return: response + sources]
+    end
+
+    style START fill:#90EE90
+    style READY fill:#87CEEB
+    style CLAUDE fill:#FFB6C1
+    style STORE fill:#DDA0DD
+    style SEARCH fill:#F0E68C
+```
+
+**Key Components:**
+- **LangChain**: Orchestrates RAG pipeline (TextSplitter, FAISS, ChatAnthropic)
+- **FAISS**: Local vector storage with HuggingFace embeddings (no API costs)
+- **Claude**: claude-3-7-sonnet-latest for response generation
+- **Question Classification**: 8 specialized prompt types for better responses
+
 ## Requirements
 
 - Node.js 20 or higher

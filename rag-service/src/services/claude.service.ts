@@ -42,8 +42,8 @@ import { createError, ErrorCode } from "../utils/errors";
  * Handles AI response generation for the Article-Chat RAG system.
  */
 export class ClaudeService {
-  private llm: ChatAnthropic | null = null;  // LangChain Claude client instance
-  private apiKey: string | undefined;        // Anthropic API key for authentication
+  private llm: ChatAnthropic | null = null; // LangChain Claude client instance
+  private apiKey: string | undefined; // Anthropic API key for authentication
 
   /**
    * Initialize Claude service with API key validation and model configuration
@@ -55,10 +55,10 @@ export class ClaudeService {
       try {
         this.llm = new ChatAnthropic({
           apiKey: this.apiKey,
-          model: process.env.CLAUDE_MODEL || "claude-3-7-sonnet-latest", // Latest Sonnet for best performance
-          temperature: parseFloat(process.env.TEMPERATURE || "0.7"),      // Balanced creativity
-          maxTokens: parseInt(process.env.MAX_TOKENS || "4000"),          // Generous response length
-          streaming: true,  // Enable streaming for real-time responses
+          model: process.env.CLAUDE_MODEL || "claude-4-5-sonnet-latest", // Latest Sonnet for best performance
+          temperature: parseFloat(process.env.TEMPERATURE || "0.7"), // Balanced creativity
+          maxTokens: parseInt(process.env.MAX_TOKENS || "4000"), // Generous response length
+          streaming: true, // Enable streaming for real-time responses
         });
       } catch (error) {
         console.error("Failed to initialize Claude service:", error);
@@ -70,7 +70,7 @@ export class ClaudeService {
   /**
    * Generate a complete response from Claude API (non-streaming)
    * Used for standard chat responses where immediate complete response is preferred
-   * 
+   *
    * @param messages - Array of conversation messages (user/assistant history + new message)
    * @returns Promise<string> - Complete Claude response text
    */
@@ -89,32 +89,37 @@ export class ClaudeService {
       return response.content as string;
     } catch (error) {
       console.error("Claude API error:", error);
-      
+
       // Map specific Claude API errors to standardized application errors
       if (error instanceof Error) {
-        if (error.message.includes('rate limit')) {
+        if (error.message.includes("rate limit")) {
           throw createError(
             ErrorCode.RATE_LIMIT_EXCEEDED,
             "Claude API rate limit exceeded. Please try again later."
           );
         }
-        if (error.message.includes('401') || error.message.includes('authentication')) {
+        if (
+          error.message.includes("401") ||
+          error.message.includes("authentication")
+        ) {
           throw createError(
             ErrorCode.INVALID_API_KEY,
             "Invalid Anthropic API key"
           );
         }
-        if (error.message.includes('timeout')) {
+        if (error.message.includes("timeout")) {
           throw createError(
             ErrorCode.SERVICE_UNAVAILABLE,
             "Claude API request timed out"
           );
         }
       }
-      
+
       throw createError(
         ErrorCode.CLAUDE_API_ERROR,
-        `Claude API error: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Claude API error: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
       );
     }
   }
@@ -122,7 +127,7 @@ export class ClaudeService {
   /**
    * Generate streaming response from Claude API for real-time delivery
    * Used for long responses where progressive display improves user experience
-   * 
+   *
    * @param messages - Array of conversation messages for context
    * @returns AsyncIterable<string> - Stream of response chunks
    */
@@ -142,26 +147,31 @@ export class ClaudeService {
       return this.processStream(stream);
     } catch (error) {
       console.error("Claude streaming error:", error);
-      
+
       // Map streaming-specific errors to application error codes
       if (error instanceof Error) {
-        if (error.message.includes('rate limit')) {
+        if (error.message.includes("rate limit")) {
           throw createError(
             ErrorCode.RATE_LIMIT_EXCEEDED,
             "Claude API rate limit exceeded. Please try again later."
           );
         }
-        if (error.message.includes('401') || error.message.includes('authentication')) {
+        if (
+          error.message.includes("401") ||
+          error.message.includes("authentication")
+        ) {
           throw createError(
             ErrorCode.INVALID_API_KEY,
             "Invalid Anthropic API key"
           );
         }
       }
-      
+
       throw createError(
         ErrorCode.CLAUDE_API_ERROR,
-        `Claude streaming error: ${error instanceof Error ? error.message : "Unknown error"}`
+        `Claude streaming error: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
       );
     }
   }
@@ -169,7 +179,7 @@ export class ClaudeService {
   /**
    * Process streaming response chunks from Claude API
    * Filters and yields only content chunks, ignoring metadata
-   * 
+   *
    * @private
    * @param stream - Raw Claude API streaming response
    * @yields string - Content chunks for progressive display
@@ -187,7 +197,7 @@ export class ClaudeService {
   /**
    * Convert conversation history to LangChain BaseMessage format
    * Transforms internal message format to what Claude API expects
-   * 
+   *
    * @param history - Array of conversation messages with role/content
    * @returns BaseMessage[] - LangChain-formatted message array
    */
@@ -196,9 +206,9 @@ export class ClaudeService {
   ): BaseMessage[] {
     return history.map((msg) => {
       if (msg.role === "user") {
-        return new HumanMessage(msg.content);    // User messages
+        return new HumanMessage(msg.content); // User messages
       } else if (msg.role === "assistant") {
-        return new AIMessage(msg.content);       // Claude responses
+        return new AIMessage(msg.content); // Claude responses
       }
       throw createError(
         ErrorCode.VALIDATION_ERROR,
@@ -210,7 +220,7 @@ export class ClaudeService {
   /**
    * Get the underlying LangChain ChatAnthropic instance
    * Used by other services that need direct access to the LLM
-   * 
+   *
    * @returns ChatAnthropic - Initialized Claude client
    */
   getLLM(): ChatAnthropic {
@@ -226,7 +236,7 @@ export class ClaudeService {
   /**
    * Check if Claude service is properly configured and ready
    * Used by health checks and service initialization validation
-   * 
+   *
    * @returns boolean - True if API key is set and client is initialized
    */
   isConfigured(): boolean {
