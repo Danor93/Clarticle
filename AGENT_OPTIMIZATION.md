@@ -57,16 +57,16 @@ flowchart TB
 
     TOOLS[🛠️ Shared Tools<br/>━━━━━━━━━<br/>FAISS Vector Search<br/>Claude Generation<br/>Article Fetch]
 
-    style CLIENT fill:#FFB6C1,stroke:#333,stroke-width:3px
-    style ROUTER fill:#FFD700,stroke:#333,stroke-width:3px
-    style SA fill:#90EE90
-    style KA fill:#90EE90
-    style CA fill:#90EE90
-    style SNA fill:#90EE90
-    style SEA fill:#90EE90
-    style EA fill:#90EE90
-    style GA fill:#90EE90
-    style TOOLS fill:#87CEEB
+    style CLIENT fill:#f78fb3,stroke:#bf3989,stroke-width:3px,color:#000
+    style ROUTER fill:#ffc107,stroke:#ff9800,stroke-width:3px,color:#000
+    style SA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style KA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style CA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style SNA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style SEA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style EA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style GA fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style TOOLS fill:#58a6ff,stroke:#1f6feb,stroke-width:2px,color:#000
 ```
 
 **How the Router Works:**
