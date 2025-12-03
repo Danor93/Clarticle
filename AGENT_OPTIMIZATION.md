@@ -17,9 +17,9 @@ flowchart LR
     FAISS --> CLAUDE[Claude Generation]
     CLAUDE --> RESPONSE[Single Response]
 
-    style PE fill:#FFB6C1
-    style FAISS fill:#87CEEB
-    style CLAUDE fill:#90EE90
+    style PE fill:#f78fb3,stroke:#bf3989,stroke-width:2px,color:#000
+    style FAISS fill:#58a6ff,stroke:#1f6feb,stroke-width:2px,color:#000
+    style CLAUDE fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
 ```
 
 **Limitations:**
