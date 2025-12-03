@@ -54,11 +54,11 @@ flowchart TB
     JWT_GEN --> CLIENT
     ERR401 --> CLIENT
 
-    style FIBER fill:#87CEEB
-    style CACHE_CHECK fill:#FFD700
-    style NODE fill:#90EE90
-    style PG fill:#DDA0DD
-    style RETURN_CACHE fill:#98FB98
+    style FIBER fill:#58a6ff,stroke:#1f6feb,stroke-width:2px,color:#000
+    style CACHE_CHECK fill:#f9826c,stroke:#da3633,stroke-width:2px,color:#000
+    style NODE fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style PG fill:#bc8cff,stroke:#8957e5,stroke-width:2px,color:#000
+    style RETURN_CACHE fill:#7ee787,stroke:#2ea043,stroke-width:2px,color:#000
 ```
 
 **Key Responsibilities:**

@@ -59,7 +59,7 @@ export class ClaudeService {
           temperature: parseFloat(process.env.TEMPERATURE || "0.7"), // Balanced creativity
           maxTokens: parseInt(process.env.MAX_TOKENS || "4000"), // Generous response length
           streaming: true, // Enable streaming for real-time responses
-        });
+        } as any);
       } catch (error) {
         console.error("Failed to initialize Claude service:", error);
         this.llm = null; // Service continues but will fail on API calls

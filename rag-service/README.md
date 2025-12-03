@@ -42,11 +42,11 @@ flowchart TB
         FORMAT --> CHAT_DONE[Return: response + sources]
     end
 
-    style START fill:#90EE90
-    style READY fill:#87CEEB
-    style CLAUDE fill:#FFB6C1
-    style STORE fill:#DDA0DD
-    style SEARCH fill:#F0E68C
+    style START fill:#3fb950,stroke:#238636,stroke-width:2px,color:#000
+    style READY fill:#58a6ff,stroke:#1f6feb,stroke-width:2px,color:#000
+    style CLAUDE fill:#f9826c,stroke:#da3633,stroke-width:2px,color:#000
+    style STORE fill:#bc8cff,stroke:#8957e5,stroke-width:2px,color:#000
+    style SEARCH fill:#ffc107,stroke:#ff9800,stroke-width:2px,color:#000
 ```
 
 **Key Components:**
